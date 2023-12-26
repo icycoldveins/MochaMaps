@@ -1,0 +1,49 @@
+.mapContainer {
+  width: 100vw;
+  height: 70vh;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+/* Default styles for mobile devices and smaller screens */
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.container {
+  width: 100%;
+  padding: 20px;
+}
+
+/* Styles for tablets and medium-sized screens */
+@media (min-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+
+  .container {
+    width: 750px;
+    margin: 0 auto;
+  }
+}
+
+/* Styles for desktops and large screens */
+@media (min-width: 1024px) {
+  body {
+    font-size: 20px;
+  }
+
+  .container {
+    width: 1000px;
+  }
+}
+.zipCodeInput {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  font-size: 16px;
+}
+.coffee-shop-list {
+  overflow-y: auto;
+}

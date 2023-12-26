@@ -1,0 +1,7 @@
+.coffee-shop-list .list-group-item {
+  border: 2px solid #333; /* Darker gray border */
+}
+.coffee-shop-list {
+    height:500px;
+    overflow-y: auto;
+  }

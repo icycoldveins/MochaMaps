@@ -1,8 +1,65 @@
-# React + Vite
+# MochaMaps
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MochaMaps is a React application that allows users to search for coffee shops in a specific location. It uses Mapbox for location services and Foursquare for coffee shop data.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Search for coffee shops by entering a location or zip code
+- View coffee shops on a map
+- Click on a coffee shop to view more details
+![Alt text](pic.png)
+![Alt text](<Screenshot 2023-12-26 at 4.16.57 PM.png>)
+## Installation
+
+1. Clone the repository:
+```
+
+git clone https://github.com/yourusername/mochamaps.git
+
+```
+
+2. Navigate to the client directory:
+```
+
+cd mochamaps/client
+
+```
+
+3. Install the dependencies:
+```
+
+npm install
+
+```
+
+## Configuration
+
+Create a `.env` file in the client directory and add your Mapbox and Foursquare API keys:
+
+```
+
+VITE_APP_MAPBOX_API_KEY="your_mapbox_api_key"
+VITE_APP_FOURSQUARE_API_KEY="your_foursquare_api_key"
+
+```
+
+## Running the Application
+
+To start the application, run the following command in the client directory:
+
+```
+
+npm run dev
+
+```
+
+The application will be available at http://localhost:3000.
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+MIT
+

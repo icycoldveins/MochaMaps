@@ -8,14 +8,14 @@
 @media only screen and (max-width: 600px) {
   .mapContainer {
     width: 100vw;
-    height: 70vh; /* Adjust this value as needed */
+    height: 50vh; /* Adjust this value as needed */
   }
 }
 
 /* This is a media query for screens between 600px and 900px, typical for tablets */
 @media only screen and (min-width: 601px) and (max-width: 900px) {
   .mapContainer {
-    height: 70; /* Adjust this value as needed */
+    height: 60vh; /* Adjust this value as needed */
   }
 }
 .coffee-shop-list {

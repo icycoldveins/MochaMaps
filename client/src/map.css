@@ -4,7 +4,18 @@
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+@media only screen and (max-width: 600px) {
+  .mapContainer {
+    height: 70; /* Adjust this value as needed */
+  }
+}
 
+/* This is a media query for screens between 600px and 900px, typical for tablets */
+@media only screen and (min-width: 601px) and (max-width: 900px) {
+  .mapContainer {
+    height: 70; /* Adjust this value as needed */
+  }
+}
 .coffee-shop-list {
   overflow-y: auto;
 }

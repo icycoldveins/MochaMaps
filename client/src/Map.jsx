@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import "./index.css";
 import "./map.css";
-
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
   const mapContainerRef = useRef(null);
@@ -44,65 +42,70 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
   }, []);
 
   useEffect(() => {
-    mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_API_KEY;
-    map.current = new mapboxgl.Map({
-      container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/standard",
-      center: [-73.935242, 40.73061],
-      zoom: 9,
-    });
+    if (mapContainerRef.current) {
+      mapContainerRef.current.innerHTML = ""; // Ensure the map container is empty
+      mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_API_KEY;
+      map.current = new mapboxgl.Map({
+        container: mapContainerRef.current,
+        style: "mapbox://styles/mapbox/standard",
+        center: [-73.935242, 40.73061],
+        zoom: 9,
+      });
 
-    let userLocation;
-    map.current.on("load", () => {
-      // Add a marker for the user's current location
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          userLocation = [position.coords.longitude, position.coords.latitude];
-          new mapboxgl.Marker({ color: "blue" })
-            .setLngLat(userLocation)
-            .addTo(map.current);
+      let userLocation;
+      map.current.on("load", () => {
+        // Add a marker for the user's current location
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            userLocation = [
+              position.coords.longitude,
+              position.coords.latitude,
+            ];
+            new mapboxgl.Marker({ color: "blue" })
+              .setLngLat(userLocation)
+              .addTo(map.current);
 
-          // Add markers for coffee shops
-          if (Array.isArray(coffeeShops)) {
-            const bounds = new mapboxgl.LngLatBounds();
+            // Add markers for coffee shops
+            if (Array.isArray(coffeeShops)) {
+              const bounds = new mapboxgl.LngLatBounds();
 
-            coffeeShops.forEach((shop) => {
-              if (
-                shop.geocodes &&
-                shop.geocodes.main &&
-                shop.geocodes.main.longitude &&
-                shop.geocodes.main.latitude
-              ) {
-                const marker = new mapboxgl.Marker({
-                  color: "red",
-                  rotation: 0,
-                  draggable: false, // Set this to true
-                })
-                  .setLngLat([
-                    shop.geocodes.main.longitude,
-                    shop.geocodes.main.latitude,
-                  ])
-                  .addTo(map.current)
-                  .on('dragstart', handleDragStart)
-                  .on('dragend', handleDragEnd);
+              coffeeShops.forEach((shop) => {
+                if (
+                  shop.geocodes &&
+                  shop.geocodes.main &&
+                  typeof shop.geocodes.main.longitude === "number" &&
+                  typeof shop.geocodes.main.latitude === "number"
+                ) {
+                  const marker = new mapboxgl.Marker({
+                    color: "red",
+                    rotation: 0,
+                    draggable: false, // Set this to true
+                  })
+                    .setLngLat([
+                      shop.geocodes.main.longitude,
+                      shop.geocodes.main.latitude,
+                    ])
+                    .addTo(map.current)
+                    .on("dragstart", handleDragStart)
+                    .on("dragend", handleDragEnd);
 
-                if (userLocation) {
-                  const shopLocation = new mapboxgl.LngLat(
-                    shop.geocodes.main.longitude,
-                    shop.geocodes.main.latitude
-                  );
-                  const userLngLat = new mapboxgl.LngLat(...userLocation);
-                  const distance = shopLocation.distanceTo(userLngLat); // distance in meters
+                  if (userLocation) {
+                    const shopLocation = new mapboxgl.LngLat(
+                      shop.geocodes.main.longitude,
+                      shop.geocodes.main.latitude
+                    );
+                    const userLngLat = new mapboxgl.LngLat(...userLocation);
+                    const distance = shopLocation.distanceTo(userLngLat); // distance in meters
 
-                  // Store the distance in the coffee shop object for later use
-                  shop.distanceToUser = distance;
+                    // Store the distance in the coffee shop object for later use
+                    shop.distanceToUser = distance;
 
-                  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+                    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
                     <h3>${shop.name} </h3>
                     <p>${shop.location.formatted_address}</p>
                     <img src="${shop.categories[0].icon.prefix}88${
-                    shop.categories[0].icon.suffix
-                  }" alt="${shop.name}" style="width: 50px; height: 50px;">
+                      shop.categories[0].icon.suffix
+                    }" alt="${shop.name}" style="width: 50px; height: 50px;">
                     ${
                       shop.distanceToUser
                         ? `<p>Distance: ${(
@@ -112,28 +115,33 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
                     }
                   `);
 
-                  marker.setPopup(popup);
+                    marker.setPopup(popup);
+                  }
+
+                  // Extend the bounds to include the shop's coordinates
+                  bounds.extend([
+                    shop.geocodes.main.longitude,
+                    shop.geocodes.main.latitude,
+                  ]);
+
+                  // Store a reference to the marker in the coffee shop object
+                  shop.marker = marker;
+                } else {
+                  console.error("Invalid shop data:", shop);
                 }
+              });
 
-                // Extend the bounds to include the shop's coordinates
-                bounds.extend([
-                  shop.geocodes.main.longitude,
-                  shop.geocodes.main.latitude,
-                ]);
-
-                // Store a reference to the marker in the coffee shop object
-                shop.marker = marker;
+              // Fit the map to the bounds with a padding of 50 pixels on each side
+              if (bounds.isEmpty()) {
+                console.log("No valid bounds found");
               } else {
-                console.error("Invalid shop data:", shop);
+                map.current.fitBounds(bounds, { padding: 50 });
               }
-            });
-
-            // Fit the map to the bounds with a padding of 50 pixels on each side
-            map.current.fitBounds(bounds, { padding: 50 });
-          }
-        });
-      }
-    });
+            }
+          });
+        }
+      });
+    }
   }, [coffeeShops]);
 
   return <div ref={mapContainerRef} className="mapContainer" />;

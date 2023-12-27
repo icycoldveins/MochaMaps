@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./index.css";
+import "./map.css";
+
 
 const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
   const mapContainerRef = useRef(null);
@@ -27,6 +29,18 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
 
   useEffect(() => {
     setHandleCoffeeShopClick.current = handleCoffeeShopClick;
+  }, []);
+
+  const handleDragStart = useCallback(() => {
+    if (map.current) {
+      map.current.dragPan.disable();
+    }
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    if (map.current) {
+      map.current.dragPan.enable();
+    }
   }, []);
 
   useEffect(() => {
@@ -62,13 +76,15 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
                 const marker = new mapboxgl.Marker({
                   color: "red",
                   rotation: 0,
-                  draggable: false, // Add this line
+                  draggable: false, // Set this to true
                 })
                   .setLngLat([
                     shop.geocodes.main.longitude,
                     shop.geocodes.main.latitude,
                   ])
-                  .addTo(map.current);
+                  .addTo(map.current)
+                  .on('dragstart', handleDragStart)
+                  .on('dragend', handleDragEnd);
 
                 if (userLocation) {
                   const shopLocation = new mapboxgl.LngLat(

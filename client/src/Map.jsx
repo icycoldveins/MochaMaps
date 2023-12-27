@@ -62,6 +62,7 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
                 const marker = new mapboxgl.Marker({
                   color: "red",
                   rotation: 0,
+                  draggable: false, // Add this line
                 })
                   .setLngLat([
                     shop.geocodes.main.longitude,

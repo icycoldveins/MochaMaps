@@ -47,7 +47,7 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
     mapboxgl.accessToken = import.meta.env.VITE_APP_MAPBOX_API_KEY;
     map.current = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/mapbox/standard",
       center: [-73.935242, 40.73061],
       zoom: 9,
     });

@@ -1,6 +1,7 @@
+import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useState } from "react";
 import axios from "axios";
-import "./index.css";
+
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");

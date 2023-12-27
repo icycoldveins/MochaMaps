@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
-import "./map.css";
-import "mapbox-gl/dist/mapbox-gl.css";
+import "./index.css";
+import React, { useEffect, useRef, useCallback } from "react";
 
 const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
   const mapContainerRef = useRef(null);
@@ -117,6 +116,14 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
 
                     marker.setPopup(popup);
                   }
+                  marker
+                    .getElement()
+                    .addEventListener("mouseenter", () => marker.togglePopup());
+
+                  // Hide the popup when the user leaves the marker
+                  marker
+                    .getElement()
+                    .addEventListener("mouseleave", () => marker.togglePopup());
 
                   // Extend the bounds to include the shop's coordinates
                   bounds.extend([

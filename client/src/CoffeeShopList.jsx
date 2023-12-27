@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 import "./coffe.css";
-import "mapbox-gl/dist/mapbox-gl.css";
 
 const CoffeeShopList = ({ coffeeShops, onCoffeeShopClick }) => {
   return (

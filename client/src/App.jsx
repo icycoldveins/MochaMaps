@@ -4,7 +4,7 @@ import Map from "./Map";
 import CoffeeShopList from "./CoffeeShopList";
 import Banner from "./Banner";
 import "./index.css";
-import "mapbox-gl/dist/mapbox-gl.css";
+import "./map.css";
 
 const App = () => {
   const [coffeeShops, setCoffeeShops] = useState([]);

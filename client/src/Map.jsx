@@ -47,7 +47,7 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
       map.current = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: "mapbox://styles/mapbox/streets-v11", // Set the style to "Streets"
-        center: [-73.935242, 40.73061],
+        center: [-73.935242, 40.7301],
         zoom: 12,
       });
 

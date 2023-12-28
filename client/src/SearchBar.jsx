@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./searchbar.css";
 
-const SearchBar = ({ onSearch }) => {
-  const [query, setQuery] = useState("");
+const SearchBar = ({ onSearch, initialQuery }) => {
+  const [query, setQuery] = useState(initialQuery || "");
+  const [isLoading, setIsLoading] = useState(false); // New state variable for loading status
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);

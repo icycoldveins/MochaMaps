@@ -1,8 +1,17 @@
 import mapboxgl from "mapbox-gl";
 import "./index.css";
-import React, { useEffect, useRef, useCallback } from "react";
+import axios from "axios";
+import React, { useEffect, useRef, useCallback, useState } from "react";
+const Map = ({
+  coffeeShops,
+  setHandleCoffeeShopClick,
+  searchCoordinates,
+  setPostalCode,
+  fetchCoffeeShops,
+}) => {
+  const [prevPostalCode, setPrevPostalCode] = useState(null);
+  const [userPinAdded, setUserPinAdded] = useState(false);
 
-const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
   const mapContainerRef = useRef(null);
   const map = useRef(null);
   let currentPopup = null; // Add this line outside your component
@@ -55,7 +64,7 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
       map.current.on("load", () => {
         // Add a marker for the user's current location
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position) => {
+          navigator.geolocation.getCurrentPosition(async (position) => {
             userLocation = [
               position.coords.longitude,
               position.coords.latitude,
@@ -63,7 +72,31 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
             new mapboxgl.Marker({ color: "blue" })
               .setLngLat(userLocation)
               .addTo(map.current);
+            setUserPinAdded(true);
+            console.log("User pin added");
+            // Reverse geocode the user's location to a postal code
+            const mapboxResponse = await axios.get(
+              `https://api.mapbox.com/geocoding/v5/mapbox.places/${
+                userLocation[0]
+              },${userLocation[1]}.json?access_token=${
+                import.meta.env.VITE_APP_MAPBOX_API_KEY
+              }`
+            );
+            const postalCode = mapboxResponse.data.features.find(
+              (feature) => feature.place_type[0] === "postcode"
+            ).text;
 
+            // Pass the postal code to the parent component
+            const currentPostalCode = postalCode;
+
+            // Only update the state and fetch coffee shops if the postal code has changed
+            if (postalCode !== prevPostalCode) {
+              setPostalCode(postalCode);
+
+              fetchCoffeeShops(postalCode);
+
+              setPrevPostalCode(postalCode);
+            }
             // Add markers for coffee shops
             if (Array.isArray(coffeeShops)) {
               const bounds = new mapboxgl.LngLatBounds();
@@ -75,14 +108,15 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
                   typeof shop.geocodes.main.longitude === "number" &&
                   typeof shop.geocodes.main.latitude === "number"
                 ) {
+                  const coordinates = searchCoordinates || userLocation;
                   const marker = new mapboxgl.Marker({
                     color: "red",
                     rotation: 0,
                     draggable: false, // Set this to true
                   })
                     .setLngLat([
-                      shop.geocodes.main.longitude,
-                      shop.geocodes.main.latitude,
+                      shop.geocodes.main.longitude || coordinates[0],
+                      shop.geocodes.main.latitude || coordinates[1],
                     ])
                     .addTo(map.current)
                     .on("dragstart", handleDragStart)
@@ -131,6 +165,9 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
                     shop.geocodes.main.latitude,
                   ]);
 
+                  //
+
+                  // Store a reference to the marker in the coffee shop object
                   // Store a reference to the marker in the coffee shop object
                   shop.marker = marker;
                 } else {
@@ -149,7 +186,7 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
         }
       });
     }
-  }, [coffeeShops]);
+  }, [coffeeShops, searchCoordinates]);
 
   return <div ref={mapContainerRef} className="mapContainer" />;
 };

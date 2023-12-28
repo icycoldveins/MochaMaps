@@ -186,7 +186,7 @@ const Map = ({
         }
       });
     }
-  }, [coffeeShops, searchCoordinates]);
+  }, [coffeeShops, searchCoordinates,fetchCoffeeShops]);
 
   return <div ref={mapContainerRef} className="mapContainer" />;
 };

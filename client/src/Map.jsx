@@ -13,7 +13,7 @@ const Map = ({ coffeeShops, setHandleCoffeeShopClick }) => {
         coffeeShop.geocodes.main.longitude,
         coffeeShop.geocodes.main.latitude,
       ],
-      zoom: 15,
+      zoom: 10,
     });
     if (currentPopup) {
       currentPopup.remove();

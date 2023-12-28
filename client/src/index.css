@@ -70,10 +70,6 @@ button:focus-visible {
     box-sizing: border-box;
   }
   .Banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
     padding: 20px;
     box-sizing: border-box;
     font-size: 2em;

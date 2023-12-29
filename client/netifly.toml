@@ -1,0 +1,8 @@
+[[headers]]
+  # Define which paths this should apply to
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    # Remove the noindex directive
+    # X-Robots-Tag = "noindex"

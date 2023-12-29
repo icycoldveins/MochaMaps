@@ -14,14 +14,14 @@ MochaMaps is a React application that allows users to search for coffee shops in
 1. Clone the repository:
 ```
 
-git clone https://github.com/yourusername/mochamaps.git
+git clone https://github.com/icycoldveins/MochaMaps
 
 ```
 
 2. Navigate to the client directory:
 ```
 
-cd mochamaps/client
+cd MochaMaps/client
 
 ```
 

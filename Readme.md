@@ -1,7 +1,9 @@
 # MochaMaps
 
 MochaMaps is a React application that allows users to search for coffee shops in a specific location. It uses Mapbox for location services and Foursquare for coffee shop data.
+[WEBSITE](https://mochamaps.netlify.app/)
 
+Copied to clipboard
 ## Features
 
 - Search for coffee shops by entering a location or zip code

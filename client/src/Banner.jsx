@@ -1,10 +1,11 @@
-import "./index.css"
+import "./index.css";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+
 const Banner = () => {
   const isMobile = window.innerWidth <= 600;
-  const fontSize = isMobile ? "1em" : "1.5em"; // Decreased from 1.2em and 2em to 1em and 1.5em
+  const fontSize = isMobile ? "1em" : "1.5em";
   const padding = isMobile ? "10px" : "20px";
 
   return (

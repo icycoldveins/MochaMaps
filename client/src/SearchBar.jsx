@@ -16,9 +16,7 @@ const SearchBar = ({ onSearch }) => {
     try {
       // Call Mapbox API to get coordinates
       const mapboxResponse = await axios.get(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${
-          import.meta.env.VITE_APP_MAPBOX_API_KEY
-        }`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${import.meta.env.VITE_APP_MAPBOX_API_KEY}`
       );
       const coordinates = mapboxResponse.data.features[0].center;
       console.log("Mapbox coordinates:", coordinates);
@@ -36,7 +34,7 @@ const SearchBar = ({ onSearch }) => {
           method: "GET",
           headers: {
             Accept: "application/json",
-            Authorization: `${import.meta.env.VITE_APP_FOURSQUARE_API_KEY}`,
+            Authorization: import.meta.env.VITE_APP_FOURSQUARE_API_KEY,
           },
         }
       );
@@ -44,13 +42,10 @@ const SearchBar = ({ onSearch }) => {
       console.log("Foursquare coffee shops:", coffeeShops);
       onSearch(coffeeShops.results); // Assuming you want to pass just the array of shops
 
-      // Pass the coffee shops up to the parent component or handle it here
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
-  const isMobile = window.innerWidth <= 600;
 
   return (
     <form onSubmit={handleSubmit} className="search-bar">
